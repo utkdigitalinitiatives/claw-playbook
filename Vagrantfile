@@ -3,7 +3,12 @@
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
-
+Vagrant.configure("2") do |config|
+  if Vagrant.has_plugin?("vagrant-vbguest")
+    # Check for and install VB Guest Additions only on the very first provision
+    config.vbguest.auto_update = !Dir['.vagrant/machines/default/*/action_provision'].any?
+  end
+end  
 Vagrant.require_version ">= 2.0.1"
 
 $cpus   = ENV.fetch("ISLANDORA_VAGRANT_CPUS", "2")
